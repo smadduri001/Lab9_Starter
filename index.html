@@ -86,22 +86,131 @@
       <button>Trigger a Global Error</button>
     </section>
   </main>
-
+  <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
+  <script>
+  window.TrackJS && TrackJS.install({ 
+    token: "08b9de21388f46c39a32efa45ebae2c7"
+    // for more configuration options, see https://docs.trackjs.com
+  });
+  </script>
   <script>
     let form = document.querySelector('form');
     form.addEventListener('submit', e => {
       e.preventDefault();
-      let output = document.querySelector('output');
-      let firstNum = document.querySelector('#first-num').value;
-      let secondNum = document.querySelector('#second-num').value;
-      let operator = document.querySelector('#operator').value;
-      output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+      try{
+        let output = document.querySelector('output');
+        let firstNum = document.querySelector('#first-num').value;
+        let secondNum = document.querySelector('#second-num').value;
+        let operator = a;
+        output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+      }
+      catch (e) {
+        console.error(e);
+      }
+      finally {
+        let operator = document.querySelector('#operator').value;
+      }
     });
 
     let errorBtns = Array.from(document.querySelectorAll('#error-btns > button'));
 
     // Start your code here
     // You may move this JS to another file if you wish
+    errorBtns[0].addEventListener('click', error =>{
+      console.log("Console Log");
+    })
+    errorBtns[1].addEventListener('click', error =>{
+      console.log("Console Error");
+    })
+    errorBtns[2].addEventListener('click', error =>{
+      count+=1;
+      console.count("Count");
+    })
+    errorBtns[3].addEventListener('click', error =>{
+      console.warn("Count Warn");
+    })
+    errorBtns[4].addEventListener('click', error =>{
+      const str = 'a';
+      const str2 = 'ab';
+      console.assert(str == str2, {number, errMsg});
+    })
+    errorBtns[5].addEventListener('click', error =>{
+      console.clear();
+    })
+    errorBtns[6].addEventListener('click', error =>{
+      console.dir(errorBtns[6]);
+    })
+    errorBtns[7].addEventListener('click', error =>{
+      console.dir(errorBtns[7].outerHTML);
+    })
+    errorBtns[8].addEventListener('click', error =>{
+      console.group();
+    })
+    errorBtns[9].addEventListener('click', error =>{
+      console.groupEnd();
+    })
+    errorBtns[10].addEventListener('click', error =>{
+      console.table([
+        {
+        name: 'cse',
+        num: 110,
+        },
+        {
+          name: 'mmw',
+          num: 14
+        },
+        {
+          name: 'ece',
+          num: 101
+        }
+        ]);
+    })
+    errorBtns[11].addEventListener('click', error =>{
+      console.time('Timer Button');
+    })
+    errorBtns[12].addEventListener('click', error =>{
+      console.timeEnd('Timer Button');
+    })
+    errorBtns[13].addEventListener('click', error =>{
+      const deep = () => { deeper(); };
+      const deeper = () => { deepest(); };
+      const deepest = () => { console.trace(); };
+  
+      deep();
+    })
+    errorBtns[14].addEventListener('click', error =>{
+      boom();
+    })
+
+    class ReferenceError extends Error {
+      constructor(message) {
+        super(message); // (1)
+        this.name = "ReferenceError"; // (2)
+      }
+    }
+    TrackJS.track('Testing TrackJS!');
+    function test() {
+      throw new ReferenceError("Sadly an error happened my friend");
+
+    }
+
+    window.onerror = function (msg, url, lineNumber, columnNumber, error) {
+      console.log(msg);
+      TrackJS.track(msg);
+    }
+    if (window.onerror) // then one exists
+      {
+       var oldError = window.onerror;
+       var newErrorHandler = function (errorMessage,url,lineNumber) { AjaxTCRExamples.reportJSError(errorMessage,url,lineNumber); oldError(errorMessage,url,lineNumber); }
+       window.onerror = newErrorHandler;
+      }
+    try {
+      test();
+    } catch(err) {
+      alert(err.message); // Whoops!
+      alert(boom()); // Reference Error
+      alert(err.stack); // a list of nested calls with line numbers for each
+    }
   </script>
 </body>
 
