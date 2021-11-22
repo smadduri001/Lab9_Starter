@@ -86,14 +86,19 @@
       <button>Trigger a Global Error</button>
     </section>
   </main>
+  
   <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
   <script>
-  window.TrackJS && TrackJS.install({ 
-    token: "08b9de21388f46c39a32efa45ebae2c7"
-    // for more configuration options, see https://docs.trackjs.com
-  });
+    window.TrackJS && TrackJS.install({ 
+      token: "08b9de21388f46c39a32efa45ebae2c7"
+      // for more configuration options, see https://docs.trackjs.com
+    });
   </script>
+                        
+
   <script>
+    TrackJS.track('Testing TrackJS!');
+                        
     let form = document.querySelector('form');
     form.addEventListener('submit', e => {
       e.preventDefault();
@@ -103,6 +108,11 @@
         let secondNum = document.querySelector('#second-num').value;
         let operator = a;
         output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+        if(boom()){
+          TrackJS.track('Testing TrackJS!');
+          throw ReferenceError("BOOM");
+        }
+        
       }
       catch (e) {
         console.error(e);
